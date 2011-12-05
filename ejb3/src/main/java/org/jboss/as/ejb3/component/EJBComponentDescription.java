@@ -65,6 +65,7 @@ import org.jboss.as.ejb3.security.EJBMethodSecurityAttribute;
 import org.jboss.as.ejb3.security.EJBSecurityViewConfigurator;
 import org.jboss.as.ejb3.timerservice.AutoTimer;
 import org.jboss.as.ejb3.timerservice.NonFunctionalTimerService;
+import org.jboss.as.ejb3.tx.TransactionTimeoutDetails;
 import org.jboss.as.server.deployment.DeploymentPhaseContext;
 import org.jboss.as.server.deployment.DeploymentUnit;
 import org.jboss.as.server.deployment.DeploymentUnitProcessingException;
@@ -173,6 +174,11 @@ public abstract class EJBComponentDescription extends ComponentDescription {
     private final ApplicableMethodInformation<TransactionAttributeType> transactionAttributes;
 
     /**
+     * The transaction timeouts
+     */
+    private final ApplicableMethodInformation<TransactionTimeoutDetails> transactionTimeouts;
+
+    /**
      * Construct a new instance.
      *
      * @param componentName      the component name
@@ -197,6 +203,7 @@ public abstract class EJBComponentDescription extends ComponentDescription {
         // setup a dependency on EJB remote tx repository service, if this EJB exposes atleast one remote view
         this.addRemoteTransactionsRepositoryDependency();
         this.transactionAttributes = new ApplicableMethodInformation<TransactionAttributeType>(componentName, TransactionAttributeType.REQUIRED);
+        this.transactionTimeouts = new ApplicableMethodInformation<TransactionTimeoutDetails>(componentName, null);
         this.methodPermissions = new ApplicableMethodInformation<EJBMethodSecurityAttribute>(componentName, null);
     }
 
@@ -621,6 +628,10 @@ public abstract class EJBComponentDescription extends ComponentDescription {
 
     public ApplicableMethodInformation<TransactionAttributeType> getTransactionAttributes() {
         return transactionAttributes;
+    }
+
+    public ApplicableMethodInformation<TransactionTimeoutDetails> getTransactionTimeouts() {
+        return transactionTimeouts;
     }
 
     public ApplicableMethodInformation<EJBMethodSecurityAttribute> getMethodPermissions() {
