@@ -84,7 +84,7 @@ public class EntityBeanEjbCreateMethodInterceptor implements Interceptor {
             exceptionOnCreate = false;
         } finally {
             if (exceptionOnCreate) {
-                entityBeanComponent.releaseEntityBeanInstance(instance);
+                entityBeanComponent.discardEntityBeanInstance(instance);
             }
         }
         instance.associate(primaryKey);
